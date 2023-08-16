@@ -79,3 +79,8 @@ class TestTimeSeriesOperations(unittest.TestCase):
 
         result = slice_by(df, identifier)
         self.assert_df_lists_equal(result, expected_result)
+
+
+if __name__ == '__main__':
+    unittest.main()
+    

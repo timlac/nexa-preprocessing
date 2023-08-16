@@ -2,7 +2,7 @@ import numpy as np
 
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
-from normalization.methods import Methods
+from normalization.methods import select_scaler
 
 
 def within_subject_functional_normalization(x: np.ndarray,
@@ -14,18 +14,13 @@ def within_subject_functional_normalization(x: np.ndarray,
     :param x: matrix with shape (observations, features)
     :param subject_ids: np Array with subject_ids
     :param method: normalization method
-    :return: normalized x matrix
+    :return: normalized matrix
     """
     # iterate over all subject ids
     for subject_id in np.unique(subject_ids):
 
         # select normalization method and create a scaler for the specific subject
-        if method == Methods.min_max:
-            scaler = MinMaxScaler()
-        elif method == Methods.standard:
-            scaler = StandardScaler()
-        else:
-            raise RuntimeError("Something went wrong, no scaling method chosen")
+        scaler = select_scaler(method)
 
         # normalize the rows corresponding for the specific subject
         rows = np.where(subject_ids == subject_id)
