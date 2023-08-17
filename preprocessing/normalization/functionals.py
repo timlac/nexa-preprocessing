@@ -1,8 +1,6 @@
 import numpy as np
 
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-
-from normalization.methods import select_scaler
+from preprocessing.normalization.methods import select_scaler
 
 
 def within_subject_functional_normalization(x: np.ndarray,

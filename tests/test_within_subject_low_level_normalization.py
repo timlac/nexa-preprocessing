@@ -2,7 +2,7 @@ import unittest
 from copy import copy
 
 import numpy as np
-from normalization.low_level import within_subject_low_level_normalization, get_subject_specific_chunks
+from preprocessing.normalization.low_level import within_subject_low_level_normalization, get_subject_specific_chunks
 
 
 class TestLowLevelNormalization(unittest.TestCase):
