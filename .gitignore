@@ -21,3 +21,5 @@ venv/
 *.pyo
 
 fiddle.py
+
+tests/test_files/
