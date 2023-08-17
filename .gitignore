@@ -19,3 +19,5 @@ venv/
 # Ignore compiled Python files
 *.pyc
 *.pyo
+
+fiddle.py

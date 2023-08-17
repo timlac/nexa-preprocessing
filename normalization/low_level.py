@@ -18,18 +18,29 @@ def within_subject_low_level_normalization(slices: List[np.ndarray],
     :param method: normalization method
     :return: normalized slices
     """
+    for subject_array, subject_indices in get_subject_specific_chunks(slices, subject_ids):
 
-    for subject_id in np.unique(subject_ids):
-        boolean_indices = (subject_ids == subject_id)
-
-        # fit on all videos in chunk
-        slice_chunk = list(compress(slices, boolean_indices))
-        slices_as_array = np.vstack(slice_chunk)
         scaler = select_scaler(method)
-        scaler.fit(slices_as_array)
+        scaler.fit(subject_array)
 
-        # transform every video in chunk indices
-        indices = np.where(boolean_indices)[0]
-        for idx in indices:
+        for idx in subject_indices:
             slices[idx] = scaler.transform(slices[idx])
     return slices
+
+
+def get_subject_specific_chunks(slices: List[np.ndarray],
+                                subject_ids: np.ndarray):
+
+    for subject_id in np.unique(subject_ids):
+        subject_boolean_indices = (subject_ids == subject_id)
+
+        # choose videos at subject_id index
+        subject_array_list = list(compress(slices, subject_boolean_indices))
+
+        # stack the list to get a single array
+        subject_array = np.vstack(subject_array_list)
+
+        subject_indices = np.where(subject_boolean_indices)[0]
+
+        yield subject_array, subject_indices
+
