@@ -31,9 +31,6 @@ def within_subject_functional_normalization(x: type[np.ndarray | pd.DataFrame],
         rows = np.where(subject_ids == subject_id)[0]
 
         if isinstance(ret_x, pd.DataFrame):
-
-            print(ret_x.iloc[rows])
-
             ret_x.iloc[rows] = scaler.fit_transform(ret_x.iloc[rows])
         elif isinstance(x, np.ndarray):
             ret_x[rows] = scaler.fit_transform(ret_x[rows])
