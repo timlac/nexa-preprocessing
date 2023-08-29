@@ -17,6 +17,8 @@ def within_subject_functional_normalization(x: type[np.ndarray | pd.DataFrame],
     :param method: normalization method
     :return: normalized matrix
     """
+
+    # make a copy of x to not modify input variable
     ret_x = copy(x)
 
     # iterate over all subject ids
