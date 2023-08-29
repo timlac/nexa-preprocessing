@@ -8,9 +8,9 @@ from typing import Union
 from preprocessing.normalization.methods import select_scaler
 
 
-def within_subject_functional_normalization(x: Union[np.ndarray | pd.DataFrame],
+def within_subject_functional_normalization(x: Union[np.ndarray, pd.DataFrame],
                                             subject_ids: np.ndarray,
-                                            method: str) -> Union[np.ndarray | pd.DataFrame]:
+                                            method: str) -> Union[np.ndarray, pd.DataFrame]:
     """
     Normalization function whereby each subject is normalized separately
 
