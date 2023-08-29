@@ -51,7 +51,5 @@ def get_subject_specific_chunks(slices: List[np.ndarray],
 
         subject_indices = np.where(subject_boolean_indices)[0]
 
-        print(type(subject_indices))
-
         yield subject_array, subject_indices
 
