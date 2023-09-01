@@ -1,15 +1,19 @@
 import numpy as np
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
 from itertools import compress
-
+from typing import Union
+import pandas as pd
 from typing import List
 
 from preprocessing.normalization.methods import select_scaler
 
+from preprocessing.normalization.check_list_object_types import check_list_objects_type
 
-def within_subject_low_level_normalization(slices: List[np.ndarray],
+
+def within_subject_low_level_normalization(slices: List[Union[np.ndarray, pd.DataFrame]],
                                            subject_ids: np.ndarray,
-                                           method: str) -> List[np.ndarray]:
+                                           method: str) -> List[Union[np.ndarray, pd.DataFrame]]:
     """
     This function takes a list of arrays, groups them according subject ids, specified in another array,
     and normalized the data in these groups.
@@ -26,12 +30,22 @@ def within_subject_low_level_normalization(slices: List[np.ndarray],
         scaler.fit(subject_array)
 
         for idx in subject_indices:
-            slices[idx] = scaler.transform(slices[idx])
+
+            if isinstance(slices[idx], np.ndarray):
+                slices[idx] = scaler.transform(slices[idx])
+
+            elif isinstance(slices[idx], pd.DataFrame):
+                slices[idx] = pd.DataFrame(scaler.transform(slices[idx]),
+                                           columns=slices[idx].columns,
+                                           index=slices[idx].index)
+            else:
+                raise ValueError("input array needs to be either a pd.Dataframe or np.ndarray")
+
     return slices
 
 
-def get_subject_specific_chunks(slices: List[np.ndarray],
-                                subject_ids: np.ndarray):
+def get_subject_specific_chunks(slices: List[Union[np.ndarray, pd.DataFrame]],
+                                subject_ids: np.ndarray) -> (List[Union[np.ndarray, pd.DataFrame]], np.ndarray):
     """
     :param slices: list of arrays with observational data
     :param subject_ids: array with all subject ids
@@ -46,10 +60,43 @@ def get_subject_specific_chunks(slices: List[np.ndarray],
         # choose videos at subject_id index
         subject_array_list = list(compress(slices, subject_boolean_indices))
 
-        # stack the list to get a single array
-        subject_array = np.vstack(subject_array_list)
+        try:
+            object_types = check_list_objects_type(slices)
+            if object_types == np.ndarray:
+                subject_array = np.vstack(subject_array_list)
+            elif object_types == pd.DataFrame:
+                subject_array = pd.concat(subject_array_list)
+        except ValueError as e:
+            # Raise the error to terminate the generator
+            raise e
 
         subject_indices = np.where(subject_boolean_indices)[0]
 
         yield subject_array, subject_indices
 
+
+# slices = [
+#     np.array([[1, 2, 3],
+#               [4, 5, 6]]),
+#
+#     np.array([[7, 8, 9],
+#               [10, 11, 12]]),
+#
+#     np.array([[13, 14, 15],
+#               [16, 17, 18]]),
+#
+#     np.array([[19, 20, 21],
+#               [22, 23, 24]])
+# ]
+#
+# df_slices = []
+# for arr in slices:
+#     df = pd.DataFrame(arr, columns=['feat1', 'feat2', 'feat3'])
+#     df_slices.append(df)
+#
+# scaler = StandardScaler()
+#
+#
+# subject_ids = np.array([1, 1, 2, 2])
+#
+# ret = within_subject_low_level_normalization(df_slices, subject_ids, "standard")
