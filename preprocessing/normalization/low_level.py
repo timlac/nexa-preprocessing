@@ -73,30 +73,3 @@ def get_subject_specific_chunks(slices: List[Union[np.ndarray, pd.DataFrame]],
         subject_indices = np.where(subject_boolean_indices)[0]
 
         yield subject_array, subject_indices
-
-
-# slices = [
-#     np.array([[1, 2, 3],
-#               [4, 5, 6]]),
-#
-#     np.array([[7, 8, 9],
-#               [10, 11, 12]]),
-#
-#     np.array([[13, 14, 15],
-#               [16, 17, 18]]),
-#
-#     np.array([[19, 20, 21],
-#               [22, 23, 24]])
-# ]
-#
-# df_slices = []
-# for arr in slices:
-#     df = pd.DataFrame(arr, columns=['feat1', 'feat2', 'feat3'])
-#     df_slices.append(df)
-#
-# scaler = StandardScaler()
-#
-#
-# subject_ids = np.array([1, 1, 2, 2])
-#
-# ret = within_subject_low_level_normalization(df_slices, subject_ids, "standard")
