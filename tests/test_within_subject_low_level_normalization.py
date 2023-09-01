@@ -29,9 +29,17 @@ class TestLowLevelNormalization(unittest.TestCase):
 
         self.subject_ids = np.array([1, 1, 2, 2])
 
-    def test_standard_normalization_numpy(self):
+    def test_standard_normalization(self):
+        self._test_standard_normalization(self.slices_np)
+        self._test_standard_normalization(self.slices_df)
+
+    def test_min_max_normalization(self):
+        self._test_min_max_normalization(self.slices_np)
+        self._test_min_max_normalization(self.slices_np)
+
+    def _test_standard_normalization(self, slices):
         normalized_slices = within_subject_low_level_normalization(
-            copy(self.slices_np), self.subject_ids, "standard"
+            copy(slices), self.subject_ids, "standard"
         )
         for subject_array, _ in get_subject_specific_chunks(normalized_slices, self.subject_ids):
 
@@ -44,35 +52,9 @@ class TestLowLevelNormalization(unittest.TestCase):
             # Assert that the standard deviation is close to 1 (within a certain tolerance)
             self.assertTrue(np.allclose(std, 1, atol=0.01))
 
-    def test_min_max_normalization_numpy(self):
+    def _test_min_max_normalization(self, slices):
         normalized_slices = within_subject_low_level_normalization(
-            copy(self.slices_np), self.subject_ids, "min_max"
-        )
-        for subject_array, _ in get_subject_specific_chunks(normalized_slices, self.subject_ids):
-
-            # Check if all values are in the range [0, 1]
-            all_in_range = np.all((0 <= subject_array) & (subject_array <= 1))
-            self.assertTrue(all_in_range)
-
-
-    def test_standard_normalization_df(self):
-        normalized_slices = within_subject_low_level_normalization(
-            copy(self.slices_df), self.subject_ids, "standard"
-        )
-        for subject_array, _ in get_subject_specific_chunks(normalized_slices, self.subject_ids):
-
-            mean = np.mean(subject_array, axis=0)
-            std = np.std(subject_array, axis=0)
-
-            # Assert that the mean is close to 0 (within a certain tolerance)
-            self.assertTrue(np.allclose(mean, 0, atol=0.01))
-
-            # Assert that the standard deviation is close to 1 (within a certain tolerance)
-            self.assertTrue(np.allclose(std, 1, atol=0.01))
-
-    def test_min_max_normalization_df(self):
-        normalized_slices = within_subject_low_level_normalization(
-            copy(self.slices_df), self.subject_ids, "min_max"
+            copy(slices), self.subject_ids, "min_max"
         )
         for subject_array, _ in get_subject_specific_chunks(normalized_slices, self.subject_ids):
 
