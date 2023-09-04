@@ -33,16 +33,28 @@ def pad_time_series(ts_list: List[np.ndarray], padding_value: int = -1000) -> np
     return np.asarray(padded_list)
 
 
-def get_cols_as_arrays(slices: List[pd.DataFrame], COLS: List[str]) -> List[np.ndarray]:
+def get_cols_as_arrays(slices: List[pd.DataFrame], cols: List[str]) -> List[np.ndarray]:
     """
     :param slices: List of dataframes
-    :param COLS: list of column names to return
+    :param cols: list of column names to return
     :return: List of arrays with only selected columns
     """
     ret = []
     for df in slices:
-        array = df[COLS].values
+        array = df[cols].values
         ret.append(array)
+    return ret
+
+
+def get_cols(slices: List[pd.DataFrame], cols: List[str]) -> List[pd.DataFrame]:
+    """
+    :param slices: List of dataframes
+    :param cols: list of column names to return
+    :return: List of arrays with only selected columns
+    """
+    ret = []
+    for df in slices:
+        ret.append(df[cols])
     return ret
 
 

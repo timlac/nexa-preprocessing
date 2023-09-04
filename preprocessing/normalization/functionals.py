@@ -32,10 +32,10 @@ def within_subject_functional_normalization(x: Union[np.ndarray, pd.DataFrame],
         # normalize the rows corresponding for the specific subject
         rows = np.where(subject_ids == subject_id)[0]
 
-        if isinstance(ret_x, pd.DataFrame):
-            ret_x.iloc[rows] = scaler.fit_transform(ret_x.iloc[rows])
+        if isinstance(x, pd.DataFrame):
+            ret_x.iloc[rows] = scaler.fit_transform(x.iloc[rows])
         elif isinstance(x, np.ndarray):
-            ret_x[rows] = scaler.fit_transform(ret_x[rows])
+            ret_x[rows] = scaler.fit_transform(x[rows])
         else:
             raise ValueError("input array x need to be either a pd.Dataframe or np.ndarray")
 
