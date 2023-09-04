@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 from preprocessing.utils.time_series_operations import (pad_time_series,
                                                         get_cols_as_arrays,
-                                                        get_subject_array,
+                                                        get_identifier_vals_as_array,
                                                         slice_by
                                                         )
 
@@ -51,7 +51,7 @@ class TestTimeSeriesOperations(unittest.TestCase):
         COL_NAME = 'A'
         expected_result = np.array([1, 1])
 
-        result = get_subject_array(slices, COL_NAME)
+        result = get_identifier_vals_as_array(slices, COL_NAME)
         self.assertTrue(np.array_equal(result, expected_result))
 
     def assert_df_lists_equal(self, df_list1, df_list2):

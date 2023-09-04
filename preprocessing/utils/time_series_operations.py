@@ -58,20 +58,21 @@ def get_cols(slices: List[pd.DataFrame], cols: List[str]) -> List[pd.DataFrame]:
     return ret
 
 
-def get_subject_array(slices: List[pd.DataFrame], subject_column: str) -> np.ndarray:
+def get_identifier_vals_as_array(slices: List[pd.DataFrame], identifier_column: str) -> np.ndarray:
     """
     :param slices: list of dataframes
-    :param subject_column: str, column name
+    :param identifier_column: str, column name
     :return: np array with the extracted column value, one for each dataframe
     """
-    y = []
+    ret = []
     for df in slices:
-        array = df[subject_column].values
+        array = df[identifier_column].values
+        # assert that we have only extracted one identifier per dataframe
         if len(np.unique(array)) != 1:
-            raise ValueError("something went wrong, more than one {} found for time series".format(subject_column))
+            raise ValueError("something went wrong, more than one {} found for time series".format(identifier_column))
         else:
-            y.append(array[0])
-    return np.asarray(y)
+            ret.append(array[0])
+    return np.asarray(ret)
 
 
 def slice_by(df: pd.DataFrame, column_name_to_slice_by: str) -> List[pd.DataFrame]:
