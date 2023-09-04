@@ -1,3 +1,5 @@
+from copy import copy
+
 import numpy as np
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 
@@ -24,6 +26,9 @@ def within_subject_low_level_normalization(slices: List[Union[np.ndarray, pd.Dat
     :param method: normalization method
     :return: normalized slices
     """
+
+    ret = copy(slices)
+
     for subject_array, subject_indices in get_subject_specific_chunks(slices, subject_ids):
 
         scaler = select_scaler(method)
@@ -32,16 +37,16 @@ def within_subject_low_level_normalization(slices: List[Union[np.ndarray, pd.Dat
         for idx in subject_indices:
 
             if isinstance(slices[idx], np.ndarray):
-                slices[idx] = scaler.transform(slices[idx])
+                ret[idx] = scaler.transform(slices[idx])
 
             elif isinstance(slices[idx], pd.DataFrame):
-                slices[idx] = pd.DataFrame(scaler.transform(slices[idx]),
-                                           columns=slices[idx].columns,
-                                           index=slices[idx].index)
+                ret[idx] = pd.DataFrame(scaler.transform(slices[idx]),
+                                        columns=slices[idx].columns,
+                                        index=slices[idx].index)
             else:
                 raise ValueError("input array needs to be either a pd.Dataframe or np.ndarray")
 
-    return slices
+    return ret
 
 
 def get_subject_specific_chunks(slices: List[Union[np.ndarray, pd.DataFrame]],
