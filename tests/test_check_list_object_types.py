@@ -2,7 +2,7 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from preprocessing.normalization.check_list_object_types import check_list_objects_type
+from nexa_preprocessing.normalization.check_list_object_types import check_list_objects_type
 
 
 class TestCheckListObjectsType(unittest.TestCase):

@@ -3,7 +3,7 @@ from copy import copy
 import pandas as pd
 
 import numpy as np
-from preprocessing.normalization.low_level import within_subject_low_level_normalization, get_subject_specific_chunks
+from nexa_preprocessing.normalization.low_level import within_subject_low_level_normalization, get_subject_specific_chunks
 
 
 class TestLowLevelNormalization(unittest.TestCase):

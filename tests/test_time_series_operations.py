@@ -1,11 +1,11 @@
 import unittest
 import numpy as np
 import pandas as pd
-from preprocessing.utils.time_series_operations import (pad_time_series,
-                                                        get_cols_as_arrays,
-                                                        get_identifier_vals_as_array,
-                                                        slice_by
-                                                        )
+from nexa_preprocessing.utils.time_series_operations import (pad_time_series,
+                                                             get_cols_as_arrays,
+                                                             get_identifier_vals_as_array,
+                                                             slice_by
+                                                             )
 
 
 class TestTimeSeriesOperations(unittest.TestCase):

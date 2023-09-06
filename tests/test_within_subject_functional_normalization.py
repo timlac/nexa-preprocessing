@@ -3,7 +3,7 @@ from copy import copy
 
 import pandas as pd
 import numpy as np
-from preprocessing.normalization.functionals import within_subject_functional_normalization
+from nexa_preprocessing.normalization.functionals import within_subject_functional_normalization
 
 
 class TestLowLevelNormalization(unittest.TestCase):

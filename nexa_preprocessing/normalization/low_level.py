@@ -8,9 +8,9 @@ from typing import Union
 import pandas as pd
 from typing import List
 
-from preprocessing.normalization.methods import select_scaler
+from nexa_preprocessing.normalization.methods import select_scaler
 
-from preprocessing.normalization.check_list_object_types import check_list_objects_type
+from nexa_preprocessing.normalization.check_list_object_types import check_list_objects_type
 
 
 def within_subject_low_level_normalization(slices: List[Union[np.ndarray, pd.DataFrame]],

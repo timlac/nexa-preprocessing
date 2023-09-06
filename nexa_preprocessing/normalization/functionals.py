@@ -5,7 +5,7 @@ import pandas as pd
 
 from typing import Union
 
-from preprocessing.normalization.methods import select_scaler
+from nexa_preprocessing.normalization.methods import select_scaler
 
 
 def within_subject_functional_normalization(x: Union[np.ndarray, pd.DataFrame],
