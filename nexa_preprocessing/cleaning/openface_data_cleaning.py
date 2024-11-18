@@ -40,7 +40,7 @@ class OpenfaceDataCleaner:
         success = df[cls.SUCCESS].values
 
         n_rows = df.shape[0]
-        ratio_high_conf = (confidence > cls.CONFIDENCE_THRESHOLD).sum() / n_rows
+        ratio_high_conf = (confidence >= cls.CONFIDENCE_THRESHOLD).sum() / n_rows
         ratio_successful = (success == cls.SUCCESS_INDICATOR).sum() / n_rows
         return ratio_successful, ratio_high_conf
 
