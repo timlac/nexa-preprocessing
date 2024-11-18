@@ -8,7 +8,6 @@ class IndexIndicator:
 
 
 class OpenfaceDataCleaner:
-
     MIN_RATIO_GOOD_FRAMES = 0.85
 
     # openface parameters
@@ -20,18 +19,11 @@ class OpenfaceDataCleaner:
     SUCCESS = "success"
 
     @classmethod
-    def examine_data_quality(cls, slices):
-
+    def examine_data_quality_batch(cls, slices):
         index_indicator = IndexIndicator()
 
         for idx, df in enumerate(slices):
-            confidence = df[cls.CONFIDENCE].values
-            success = df[cls.SUCCESS].values
-
-            n_rows = df.shape[0]
-            ratio_high_conf = (confidence > cls.CONFIDENCE_THRESHOLD).sum() / n_rows
-            ratio_successful = (success == cls.SUCCESS_INDICATOR).sum() / n_rows
-
+            ratio_successful, ratio_high_conf = cls.examine_data_quality(df)
             if ratio_successful < 1 or ratio_high_conf < 1:
                 if ratio_successful < cls.MIN_RATIO_GOOD_FRAMES or ratio_high_conf < cls.MIN_RATIO_GOOD_FRAMES:
                     index_indicator.bad_indices.append(idx)
@@ -41,6 +33,16 @@ class OpenfaceDataCleaner:
                 index_indicator.perfect_indices.append(idx)
 
         return index_indicator
+
+    @classmethod
+    def examine_data_quality(cls, df):
+        confidence = df[cls.CONFIDENCE].values
+        success = df[cls.SUCCESS].values
+
+        n_rows = df.shape[0]
+        ratio_high_conf = (confidence > cls.CONFIDENCE_THRESHOLD).sum() / n_rows
+        ratio_successful = (success == cls.SUCCESS_INDICATOR).sum() / n_rows
+        return ratio_successful, ratio_high_conf
 
     @classmethod
     def interpolate_single_slice(cls, df, x_cols):
