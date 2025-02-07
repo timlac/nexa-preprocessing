@@ -80,9 +80,8 @@ def slice_by(df: pd.DataFrame, column_name_to_slice_by: str) -> List[pd.DataFram
     :param df: dataframe with multiple time series
     :param column_name_to_slice_by: str, column name to identify unique time series
     :return: list of dataframes.
-    NOTE: since this function uses pandas groupby method the order of the list the order won't be preserved
     """
     ret = []
-    for _, group in df.groupby(column_name_to_slice_by):
+    for _, group in df.groupby(column_name_to_slice_by, sort=False):
         ret.append(group)
     return ret
